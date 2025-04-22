@@ -16,7 +16,7 @@ runtime:
         - pdo_pgsql
         - sodium
         - xsl
-        
+
 
 variables:
     php:
@@ -35,11 +35,12 @@ web:
 
 mounts:
     "/var": { source: local, source_path: var }
-    
+    "/public/uploads": { source: service, service: files, source_path: uploads }
+
 
 relationships:
     database: "database:postgresql"
-    
+
 hooks:
     build: |
         set -x -e
@@ -58,6 +59,13 @@ crons:
         # Check that no security issues have been found for PHP packages deployed in production
         spec: '50 23 * * *'
         cmd: if [ "$PLATFORM_ENVIRONMENT_TYPE" = "production" ]; then croncape COMPOSER_ROOT_VERSION=1.0.0 COMPOSER_AUDIT_ABANDONED=ignore composer audit --no-cache; fi
+    comment_cleanup:
+        # Cleanup every night at 11.50 pm (UTC).
+        spec: '50 23 * * *'
+        cmd: |
+            if [ "$PLATFORM_ENVIRONMENT_TYPE" = "production" ]; then
+                croncape symfony console app:comment:cleanup
+            fi
 
 workers:
     messenger:
