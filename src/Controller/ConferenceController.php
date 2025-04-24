@@ -28,8 +28,14 @@ class ConferenceController extends AbstractController
     ) {
     }
     
+    #[Route('/')]
+    public function indexNoLocale(): Response
+    {
+        return $this->redirectToRoute('homepage', ['_locale' => 'en']);
+    }
+    
     //#[Route('/conference', name: 'app_conference')]
-    #[Route('/', name: 'homepage')]
+    #[Route('/{_locale<%app.supported_locales%>}/', name: 'homepage')]
     public function index(ConferenceRepository $conferenceRepository): Response
     {
         /**
@@ -40,10 +46,11 @@ class ConferenceController extends AbstractController
         
         return $this->render('conference/index.html.twig', [
             'conferences' => $conferenceRepository->findAll(),
-        ])->setSharedMaxAge(3600);
+        // ])->setSharedMaxAge(3600);
+        ]);
     }
     
-    #[Route('/conference/{slug}', name: 'conference')]
+    #[Route('/{_locale<%app.supported_locales%>}/conference/{slug}', name: 'conference')]
     public function show(
         Request $request,
         Conference $conference,
