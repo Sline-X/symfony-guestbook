@@ -16,6 +16,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^3.3",
         "easycorp/easyadmin-bundle": "^4.24",
+        "friendsofphp/php-cs-fixer": "^3.75",
         "imagine/imagine": "^1.2",
         "nelmio/cors-bundle": "^2.5",
         "phpdocumentor/reflection-docblock": "^5.6",
