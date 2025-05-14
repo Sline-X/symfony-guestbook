@@ -123,6 +123,7 @@
         "symfony/panther": "^2.2",
         "symfony/phpunit-bridge": "^7.2",
         "symfony/stopwatch": "7.2.*",
-        "symfony/web-profiler-bundle": "7.2.*"
+        "symfony/web-profiler-bundle": "7.2.*",
+        "vimeo/psalm": "^6.10"
     }
 }
