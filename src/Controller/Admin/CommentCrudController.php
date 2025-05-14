@@ -9,9 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 
@@ -21,7 +19,7 @@ class CommentCrudController extends AbstractCrudController
     {
         return Comment::class;
     }
-    
+
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
@@ -29,17 +27,16 @@ class CommentCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('Conference comments')
             ->setSearchFields(['author', 'text', 'email'])
             ->setDefaultSort(['createdAt' => 'DESC'])
-            ;
+        ;
     }
-    
+
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
             ->add(EntityFilter::new('conference'))
-            ;
+        ;
     }
 
-    
     public function configureFields(string $pageName): iterable
     {
         yield AssociationField::new('conference');
@@ -54,7 +51,7 @@ class CommentCrudController extends AbstractCrudController
             ->onlyOnIndex()
         ;
         yield TextField::new('state');
-        
+
         $createdAt = DateTimeField::new('createdAt')->setFormTypeOptions([
             'years' => range(date('Y'), date('Y') + 5),
             'widget' => 'single_text',
@@ -63,5 +60,4 @@ class CommentCrudController extends AbstractCrudController
             yield $createdAt->setFormTypeOption('disabled', true);
         }
     }
-    
 }
