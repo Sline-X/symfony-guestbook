@@ -22,17 +22,17 @@ class CommentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Comment::class);
     }
-    
+
     public function countOldRejected(): int
     {
         return $this->getOldRejectedQueryBuilder()->select('COUNT(c.id)')->getQuery()->getSingleScalarResult();
     }
-    
+
     public function deleteOldRejected(): int
     {
         return $this->getOldRejectedQueryBuilder()->delete()->getQuery()->execute();
     }
-    
+
     private function getOldRejectedQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('c')
@@ -43,7 +43,7 @@ class CommentRepository extends ServiceEntityRepository
             ->setParameter('date', new \DateTimeImmutable(-self::DAYS_BEFORE_REJECTED_REMOVAL.' days'))
             ;
     }
-    
+
     public function getCommentPaginator(Conference $conference, int $offset): Paginator
     {
         $query = $this->createQueryBuilder('c')
@@ -55,7 +55,7 @@ class CommentRepository extends ServiceEntityRepository
             ->setMaxResults(self::COMMENTS_PER_PAGE)
             ->setFirstResult($offset)
             ->getQuery();
-        
+
         return new Paginator($query);
     }
 
