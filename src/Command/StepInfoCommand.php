@@ -20,8 +20,7 @@ class StepInfoCommand extends Command
 {
     public function __construct(
         private CacheInterface $cache,
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -43,7 +42,7 @@ class StepInfoCommand extends Command
         // }
 
         // if ($input->getOption('option1')) {
-            // ...
+        // ...
         // }
 
         // $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
@@ -51,16 +50,16 @@ class StepInfoCommand extends Command
         // $process = new Process(['git', 'tag', '-l', '--points-at', 'HEAD']);
         // $process->mustRun();
         // $output->write($process->getOutput());
-        
+
         $step = $this->cache->get('app.current_step', function ($item) {
             $process = new Process(['git', 'tag', '-l', '--points-at', 'HEAD']);
             $process->mustRun();
             $item->expiresAfter(30);
-            
+
             return $process->getOutput();
         });
         $output->write($step);
-        
+
         return Command::SUCCESS;
     }
 }

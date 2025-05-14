@@ -57,7 +57,7 @@ class Conference
     {
         $this->comments = new ArrayCollection();
     }
-    
+
     public function __toString(): string
     {
         return $this->city.' '.$this->year;
@@ -67,7 +67,7 @@ class Conference
     {
         return $this->id;
     }
-    
+
     public function computeSlug(SluggerInterface $slugger)
     {
         if (!$this->slug || '-' === $this->slug) {

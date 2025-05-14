@@ -114,7 +114,7 @@ class Comment
 
         return $this;
     }
-    
+
     #[ORM\PrePersist]
     public function setCreatedAtValue()
     {

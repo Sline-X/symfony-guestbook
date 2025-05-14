@@ -5,10 +5,9 @@ namespace App\Repository;
 use App\Entity\Comment;
 use App\Entity\Conference;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Comment>
@@ -18,6 +17,7 @@ class CommentRepository extends ServiceEntityRepository
     public const COMMENTS_PER_PAGE = 2;
 
     private const DAYS_BEFORE_REJECTED_REMOVAL = 7;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
@@ -41,7 +41,7 @@ class CommentRepository extends ServiceEntityRepository
             ->setParameter('state_rejected', 'rejected')
             ->setParameter('state_spam', 'spam')
             ->setParameter('date', new \DateTimeImmutable(-self::DAYS_BEFORE_REJECTED_REMOVAL.' days'))
-            ;
+        ;
     }
 
     public function getCommentPaginator(Conference $conference, int $offset): Paginator

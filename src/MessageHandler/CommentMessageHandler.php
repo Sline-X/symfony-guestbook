@@ -31,19 +31,19 @@ class CommentMessageHandler
         private NotifierInterface $notifier,
         private ImageOptimizer $imageOptimizer,
         #[Autowire('%photo_dir')] private string $photoDir,
-        private ?loggerInterface $logger = null,
+        private ?LoggerInterface $logger = null,
     ) {
     }
-    
+
     public function __invoke(CommentMessage $message)
     {
         $comment = $this->commentRepository->find($message->getId());
         if (!$comment) {
             return;
         }
-        
+
         if ($this->commentStateMachine->can($comment, 'accept')) {
-            $score      = $this->spamChecker->getspamScore($comment, $message->getContext());
+            $score = $this->spamChecker->getspamScore($comment, $message->getContext());
             $transition = match ($score) {
                 2 => 'reject_spam',
                 1 => 'might_be_spam',
@@ -63,12 +63,12 @@ class CommentMessageHandler
             //     ->context(['comment' => $comment])
             // );
             $this->notifier->send(new CommentReviewNotification($comment), ...$this->notifier->getAdminRecipients());
-            // $notification = new CommentReviewNotification($comment, $message->getReviewUrl());
-            // $this->notifier->send($notification, ...$this->notifier->getAdminRecipients());
+        // $notification = new CommentReviewNotification($comment, $message->getReviewUrl());
+        // $this->notifier->send($notification, ...$this->notifier->getAdminRecipients());
         } elseif ($this->commentStateMachine->can($comment, 'optimize')) {
             if ($comment->getPhotoFilename()) {
                 $this->imageOptimizer->resize($this->photoDir.'/'.$comment->getPhotoFilename());
-        }
+            }
             $this->commentStateMachine->apply($comment, 'optimize');
             $this->entityManager->flush();
         } elseif ($this->logger) {

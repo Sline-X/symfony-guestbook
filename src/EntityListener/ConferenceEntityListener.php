@@ -16,12 +16,12 @@ class ConferenceEntityListener
         private SluggerInterface $slugger,
     ) {
     }
-    
+
     public function prePersist(Conference $conference, LifecycleEventArgs $args)
     {
         $conference->computeSlug($this->slugger);
     }
-    
+
     public function preUpdate(Conference $conference, LifecycleEventArgs $args)
     {
         $conference->computeSlug($this->slugger);

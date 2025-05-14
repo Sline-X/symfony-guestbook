@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Controller\ConferenceController;
 use App\Entity\Comment;
 use App\Entity\Conference;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;

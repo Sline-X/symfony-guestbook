@@ -15,8 +15,7 @@ class CommentCleanupCommand extends Command
 {
     public function __construct(
         private CommentRepository $commentRepository,
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -33,7 +32,7 @@ class CommentCleanupCommand extends Command
 
         if ($input->getOption('dry-run')) {
             $io->note('Dry mode enabled');
-            
+
             $count = $this->commentRepository->countOldRejected();
         } else {
             $count = $this->commentRepository->deleteOldRejected();

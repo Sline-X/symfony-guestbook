@@ -24,12 +24,12 @@ class AdminController extends AbstractController
         private MessageBusInterface $bus,
     ) {
     }
-    
+
     #[Route('/comment/review/{id}', name: 'review_comment')]
     public function reviewComment(Request $request, Comment $comment, WorkflowInterface $commentStateMachine): Response
     {
         $accepted = !$request->query->get('reject');
-        
+
         if ($commentStateMachine->can($comment, 'publish')) {
             $transition = $accepted ? 'publish' : 'reject';
         } elseif ($commentStateMachine->can($comment, 'publish_ham')) {
@@ -37,31 +37,31 @@ class AdminController extends AbstractController
         } else {
             return new Response('Comment already reviewed or not in the right state');
         }
-        
+
         $commentStateMachine->apply($comment, $transition);
         $this->entityManager->flush();
-        
+
         if ($accepted) {
             $this->bus->dispatch(new CommentMessage($comment->getId()));
             // $reviewUrl = $this->generateUrl('review_comment', ['id' => $comment->getId()]);
             // $this->bus->dispatch(new CommentMessage($comment->getId(), $reviewUrl));
         }
-        
+
         return new Response($this->twig->render('admin/review.html.twig', [
             'transition' => $transition,
             'comment' => $comment,
         ]));
     }
-    
+
     #[Route('/http-cache/{uri<.*>}', methods: ['PURGE'])]
     public function purgeHttpCache(KernelInterface $kernel, Request $request, string $uri, StoreInterface $store): Response
     {
         if ('prod' === $kernel->getEnvironment()) {
             return new Response('KO', 400);
         }
-        
+
         $store->purge($request->getSchemeAndHttpHost().'/'.$uri);
-        
+
         return new Response('Done');
     }
 }

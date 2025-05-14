@@ -14,8 +14,8 @@ class AppFixtures extends Fixture
     public function __construct(
         private PasswordHasherFactoryInterface $passwordHasherFactory,
     ) {
-    
     }
+
     public function load(ObjectManager $manager): void
     {
         $amsterdam = new Conference();
@@ -23,13 +23,13 @@ class AppFixtures extends Fixture
         $amsterdam->setYear('2019');
         $amsterdam->setIsInternational(true);
         $manager->persist($amsterdam);
-        
+
         $paris = new Conference();
         $paris->setCity('Paris');
         $paris->setYear('2020');
         $paris->setIsInternational(false);
         $manager->persist($paris);
-        
+
         $comment1 = new Comment();
         $comment1->setConference($amsterdam);
         $comment1->setAuthor('Fabien');
@@ -44,7 +44,7 @@ class AppFixtures extends Fixture
         $comment2->setEmail('lucas@example.com');
         $comment2->setText('I think this one is going to be moderated.');
         $manager->persist($comment2);
-        
+
         $admin = new Admin();
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setUsername('admin');
